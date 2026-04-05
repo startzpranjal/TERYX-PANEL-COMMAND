@@ -19,10 +19,10 @@ draw_menu() {
     echo -e "${YELLOW}=================================${NC}"
 }
 
-clear
-draw_menu
-
 while true; do
+    clear
+    draw_menu
+
     echo -ne "Enter your choice: "
     read choice
 
@@ -30,21 +30,20 @@ while true; do
         1)
             echo -e "${CYAN}Installing Teryx Panel...${NC}"
             bash -c "$(curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxpanel.sh)"
-            echo
-            draw_menu
             ;;
         2)
             echo -e "${CYAN}Installing Teryx Daemon/Node...${NC}"
             bash -c "$(curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxdaemon.sh)"
-            echo
-            draw_menu
             ;;
         0)
             echo -e "${RED}Exiting...${NC}"
             exit 0
             ;;
         *)
-            # do nothing, just re-prompt without redraw
+            # silent
             ;;
     esac
+
+    echo
+    read -p "Press Enter to continue..."
 done
