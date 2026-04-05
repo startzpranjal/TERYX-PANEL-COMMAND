@@ -10,9 +10,9 @@ NC='\033[0m' # No Color
 while true; do
     clear
 
-    # Title with figlet
+    # Bold title with figlet
     echo -e "${CYAN}"
-    figlet -f slant "STARTZ MAIN MENU"
+    figlet -f big "STARTZ MAIN MENU"
     echo -e "${NC}"
 
     echo -e "${YELLOW}=================================${NC}"
@@ -39,9 +39,7 @@ while true; do
             exit 0
             ;;
         *)
-            echo -e "${RED}Invalid option!${NC}"
             sleep 1
             ;;
     esac
 done
-
