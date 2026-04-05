@@ -7,23 +7,19 @@ CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-draw_menu() {
-    echo -e "${CYAN}"
-    figlet -f big "STARTZ MAIN MENU"
-    echo -e "${NC}"
+# Draw menu once
+echo -e "${CYAN}"
+figlet -f big "STARTZ MAIN MENU"
+echo -e "${NC}"
 
-    echo -e "${YELLOW}=================================${NC}"
-    echo -e "${GREEN}1.${NC} Install Teryx Panel"
-    echo -e "${GREEN}2.${NC} Install Teryx Daemon/Node"
-    echo -e "${RED}0.${NC} Exit"
-    echo -e "${YELLOW}=================================${NC}"
-}
+echo -e "${YELLOW}=================================${NC}"
+echo -e "${GREEN}1.${NC} Install Teryx Panel"
+echo -e "${GREEN}2.${NC} Install Teryx Daemon/Node"
+echo -e "${RED}0.${NC} Exit"
+echo -e "${YELLOW}=================================${NC}"
 
 while true; do
-    clear
-    draw_menu
-
-    echo -ne "Enter your choice: "
+    echo -ne "\nEnter your choice: "
     read choice
 
     case "$choice" in
@@ -40,10 +36,7 @@ while true; do
             exit 0
             ;;
         *)
-            # silent
+            # do nothing
             ;;
     esac
-
-    echo
-    read -p "Press Enter to continue..."
 done
