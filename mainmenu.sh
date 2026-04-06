@@ -29,20 +29,20 @@ draw_menu() {
 while true; do
     draw_menu
     echo -ne "\nEnter your choice: "
-    read choice
+    read -r choice
 
     case "$choice" in
         1)
             echo -e "${CYAN}Installing Teryx Panel...${NC}"
             bash -c "$(curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxpanel.sh)"
             echo -e "${GREEN}Press enter to return to menu...${NC}"
-            read
+            read -r
             ;;
         2)
             echo -e "${CYAN}Installing Teryx Daemon/Node...${NC}"
             bash -c "$(curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxdaemon.sh)"
             echo -e "${GREEN}Press enter to return to menu...${NC}"
-            read
+            read -r
             ;;
         0)
             echo -e "${RED}Exiting...${NC}"
@@ -50,7 +50,7 @@ while true; do
             ;;
         *)
             echo -e "${RED}Invalid option!${NC}"
-            sleep 1
+            sleep 2
             ;;
     esac
 done
