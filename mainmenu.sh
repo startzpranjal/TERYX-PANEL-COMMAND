@@ -113,7 +113,7 @@ while true; do
             echo -e "${G}👋 Exiting... Thanks for using!${N}"
             exit 0
             ;;
-        *)
+        11)
             echo ""
             echo -e "${R}❌ Invalid Option! Please select between 1-10.${N}"
             sleep 2
