@@ -55,13 +55,13 @@ while true; do
         1)
             echo ""
             echo -e "${Y}🔄 Running TERYX PANEL Installer...${N}"
-            curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxpanel.sh | bash 's/\r$//' | bash
+            curl -fsSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxpanel.sh | sed 's/\r$//' | bash
             pause
             ;;
         2)
             echo ""
             echo -e "${Y}🛠️  Running TERYX NODE Installer...${N}"
-            curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxdaemon.sh | bash 's/\r$//' | bash
+            curl -fsSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxdaemon.sh | sed 's/\r$//' | bash
             pause
             ;;
         3)
