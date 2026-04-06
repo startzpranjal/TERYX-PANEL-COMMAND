@@ -13,51 +13,39 @@ if ! command -v figlet &> /dev/null; then
     apt-get update -y && apt-get install figlet -y &> /dev/null
 fi
 
-draw_menu() {
-    clear
-    echo -e "${CYAN}"
-    figlet -f big "STARTZ"
-    echo -e "      MAIN MENU"
-    echo -e "${NC}"
-    echo -e "${YELLOW}=================================${NC}"
-    echo -e "${GREEN}1.${NC} Install Teryx Panel"
-    echo -e "${GREEN}2.${NC} Install Teryx Daemon/Node"
-    echo -e "${RED}0.${NC} Exit"
-    echo -e "${YELLOW}=================================${NC}"
-}
+# Clear screen and show header once
+clear
+echo -e "${CYAN}"
+figlet -f big "STARTZ"
+echo -e "      MAIN MENU"
+echo -e "${NC}"
+echo -e "${YELLOW}=================================${NC}"
 
-# The loop must take input from the terminal keyboard
-while true; do
-    draw_menu
-    echo -ne "\nEnter your choice: "
-    # -r prevents backslash escaping; input is now strictly from the keyboard
-    read -r choice
+# Configure the menu prompt
+PS3=$'\n'"Enter your choice: "
 
-    case "$choice" in
-        1)
-            echo -e "${CYAN}Installing Teryx Panel...${NC}"
+# Define the options
+options=("Install Teryx Panel" "Install Teryx Daemon/Node" "Exit")
+
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Install Teryx Panel")
+            echo -e "\n${CYAN}Installing Teryx Panel...${NC}"
             bash -c "$(curl -sSL https://githubusercontent.com)"
-            echo -e "${GREEN}Press enter to return to menu...${NC}"
-            read -r
+            echo -e "${GREEN}Task complete. Choose another option or Exit.${NC}"
             ;;
-        2)
-            echo -e "${CYAN}Installing Teryx Daemon/Node...${NC}"
+        "Install Teryx Daemon/Node")
+            echo -e "\n${CYAN}Installing Teryx Daemon/Node...${NC}"
             bash -c "$(curl -sSL https://githubusercontent.com)"
-            echo -e "${GREEN}Press enter to return to menu...${NC}"
-            read -r
+            echo -e "${GREEN}Task complete. Choose another option or Exit.${NC}"
             ;;
-        0)
+        "Exit")
             echo -e "${RED}Exiting...${NC}"
-            exit 0
+            break
             ;;
-        *)
-            # If the user enters nothing or an invalid key
-            if [[ -z "$choice" ]]; then
-                continue
-            else
-                echo -e "${RED}Invalid option!${NC}"
-                sleep 2
-            fi
+        *) 
+            echo -e "${RED}Invalid option! Please pick 1, 2, or 3.${NC}"
             ;;
     esac
 done
