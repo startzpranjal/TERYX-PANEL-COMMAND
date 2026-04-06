@@ -26,14 +26,12 @@ draw_menu() {
     echo -e "${YELLOW}=================================${NC}"
 }
 
+# The loop must take input from the terminal keyboard
 while true; do
     draw_menu
     echo -ne "\nEnter your choice: "
-    # Use read -r to handle input correctly
+    # -r prevents backslash escaping; input is now strictly from the keyboard
     read -r choice
-
-    # Remove any accidental leading/trailing whitespace
-    choice=$(echo "$choice" | xargs)
 
     case "$choice" in
         1)
@@ -52,14 +50,14 @@ while true; do
             echo -e "${RED}Exiting...${NC}"
             exit 0
             ;;
-        "") 
-            # If the user just presses Enter, redraw the menu without error
-            continue 
-            ;;
         *)
-            echo -e "${RED}Invalid option!${NC}"
-            sleep 2
+            # If the user enters nothing or an invalid key
+            if [[ -z "$choice" ]]; then
+                continue
+            else
+                echo -e "${RED}Invalid option!${NC}"
+                sleep 2
+            fi
             ;;
     esac
 done
-# NO PIPE HERE
