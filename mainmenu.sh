@@ -29,18 +29,22 @@ draw_menu() {
 while true; do
     draw_menu
     echo -ne "\nEnter your choice: "
+    # Use read -r to handle input correctly
     read -r choice
+
+    # Remove any accidental leading/trailing whitespace
+    choice=$(echo "$choice" | xargs)
 
     case "$choice" in
         1)
             echo -e "${CYAN}Installing Teryx Panel...${NC}"
-            bash -c "$(curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxpanel.sh)"
+            bash -c "$(curl -sSL https://githubusercontent.com)"
             echo -e "${GREEN}Press enter to return to menu...${NC}"
             read -r
             ;;
         2)
             echo -e "${CYAN}Installing Teryx Daemon/Node...${NC}"
-            bash -c "$(curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxdaemon.sh)"
+            bash -c "$(curl -sSL https://githubusercontent.com)"
             echo -e "${GREEN}Press enter to return to menu...${NC}"
             read -r
             ;;
@@ -48,9 +52,14 @@ while true; do
             echo -e "${RED}Exiting...${NC}"
             exit 0
             ;;
+        "") 
+            # If the user just presses Enter, redraw the menu without error
+            continue 
+            ;;
         *)
             echo -e "${RED}Invalid option!${NC}"
             sleep 2
             ;;
     esac
 done
+# NO PIPE HERE
