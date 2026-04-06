@@ -32,12 +32,12 @@ do
     case $opt in
         "Install Teryx Panel")
             echo -e "\n${CYAN}Installing Teryx Panel...${NC}"
-            bash -c "$(curl -sSL https://githubusercontent.com)"
+            bash -c "$(curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxpanel.sh | bash)"
             echo -e "${GREEN}Task complete. Choose another option or Exit.${NC}"
             ;;
         "Install Teryx Daemon/Node")
             echo -e "\n${CYAN}Installing Teryx Daemon/Node...${NC}"
-            bash -c "$(curl -sSL https://githubusercontent.com)"
+            bash -c "$(curl -sSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxdaemon.sh | bash)"
             echo -e "${GREEN}Task complete. Choose another option or Exit.${NC}"
             ;;
         "Exit")
@@ -45,7 +45,7 @@ do
             break
             ;;
         *) 
-            echo -e "${RED}Invalid option! Please pick 1, 2, or 3.${NC}"
+            echo -e "$Please pick 1, 2, or 3.${NC}"
             ;;
     esac
 done
