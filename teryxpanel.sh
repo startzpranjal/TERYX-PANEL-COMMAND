@@ -63,9 +63,6 @@ echo "* Cloning and Installing Panel..."
 git clone https://github.com/teryxlabs/v4panel
 cd v4panel || exit
 
-unzip panel.zip
-cd panel || exit
-
 npm install
 npm run seed
 npm run createUser
