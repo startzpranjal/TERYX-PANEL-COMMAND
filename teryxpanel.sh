@@ -67,8 +67,8 @@ npm install
 npm run seed
 npm run createUser
 
-npm install -g pm2
-pm2 start .
+npm install
+node .
 
 echo_message "* Panel Installed Successfully"
 echo "* Panel is now running 🚀"
