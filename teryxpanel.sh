@@ -31,7 +31,6 @@ CYAN='\033[0;36m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
 
-# Message function
 echo_message() {
   echo -e "${GREEN}$1${NC}"
 }
@@ -40,7 +39,7 @@ clear
 
 # Root check
 if [ "$EUID" -ne 0 ]; then
-  echo -e "${RED}Please run this script as root.${NC}"
+  echo -e "${RED}Run this script as root.${NC}"
   exit 1
 fi
 
@@ -49,18 +48,16 @@ echo -e "${CYAN}$ascii_startz${NC}"
 echo -e "${CYAN}$ascii_panel${NC}"
 
 echo "* Installing Dependencies..."
-
 apt update -y
 apt install -y curl software-properties-common git zip unzip
 
-# Install Node.js (v23)
+# Node.js
 curl -sL https://deb.nodesource.com/setup_23.x | bash -
 apt install -y nodejs
 
 echo_message "* Dependencies Installed"
 
 echo "* Cloning Panel..."
-
 git clone https://github.com/teryxlabs/v4panel
 cd v4panel || exit
 
@@ -71,7 +68,6 @@ fi
 
 echo "* Detecting panel directory..."
 
-# Auto-detect correct folder
 PANEL_DIR=$(find . -maxdepth 1 -type d ! -name '.' | head -n 1)
 
 if [ -n "$PANEL_DIR" ]; then
@@ -84,6 +80,21 @@ npm install
 npm run seed
 npm run createUser
 
-echo_message "* Starting Panel..."
+echo_message "* Setup Complete"
 
-npm run start
+# 🔥 FINAL MESSAGE (important fix)
+echo -e "${YELLOW}"
+echo "========================================"
+echo " PANEL INSTALLED SUCCESSFULLY"
+echo ""
+echo " IMPORTANT:"
+echo " This panel does NOT auto-run a server."
+echo ""
+echo " To start manually, try:"
+echo "   npm run start"
+echo "   OR"
+echo "   node index.js"
+echo ""
+echo " If it still exits, this panel is CLI-based."
+echo "========================================"
+echo -e "${NC}"
