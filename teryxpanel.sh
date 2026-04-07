@@ -47,6 +47,8 @@ fi
 echo -e "${CYAN}$ascii_startz${NC}"
 echo -e "${CYAN}$ascii_panel${NC}"
 
+apt-get update && apt-get install -y --no-install-recommends git
+
 echo "* Cloning Repository..."
 
 git clone https://github.com/teryxlabs/v4panel 
