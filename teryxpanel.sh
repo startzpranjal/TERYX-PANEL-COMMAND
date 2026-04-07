@@ -1,27 +1,25 @@
 #!/bin/bash
 
-# ASCII Art (STARTZ)
-ascii_startz="
+# Exit on error
+set -e
 
+# ASCII Art
+ascii_startz="
   ███████╗████████╗ █████╗ ██████╗ ████████╗███████╗
   ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝╚══███╔╝
   ███████╗   ██║   ███████║██████╔╝   ██║     ███╔╝ 
   ╚════██║   ██║   ██╔══██║██╔══██╗   ██║    ███╔╝  
   ███████║   ██║   ██║  ██║██║  ██║   ██║   ███████╗
   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
-
 "
 
-# ASCII Art (TERYXPANEL)
 ascii_panel="
-
   ████████╗███████╗██████╗ ██╗   ██╗██╗  ██╗██████╗  █████╗ ███╗   ██╗███████╗██╗     
   ╚══██╔══╝██╔════╝██╔══██╗╚██╗ ██╔╝╚██╗██╔╝██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     
      ██║   █████╗  ██████╔╝ ╚████╔╝  ╚███╔╝ ██████╔╝███████║██╔██╗ ██║█████╗  ██║     
      ██║   ██╔══╝  ██╔══██╗  ╚██╔╝   ██╔██╗ ██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║     
      ██║   ███████╗██║  ██║   ██║   ██╔╝ ██╗██║     ██║  ██║██║ ╚████║███████╗███████╗
      ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝
-
 "
 
 # Colors
@@ -30,7 +28,6 @@ GREEN='\033[0;32m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# Message function
 echo_message() {
   echo -e "${GREEN}$1${NC}"
 }
@@ -43,32 +40,47 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+# Fix dpkg cross-device issue
+echo_message "Fixing dpkg issues..."
+mkdir -p /root/tmp
+export TMPDIR=/root/tmp
+apt-get clean
+
 # Show banners
 echo -e "${CYAN}$ascii_startz${NC}"
 echo -e "${CYAN}$ascii_panel${NC}"
 
-apt-get update && apt-get install -y --no-install-recommends git
+echo_message "Updating system..."
+apt update -y && apt upgrade -y
 
-echo "* Cloning Repository..."
+echo_message "Installing dependencies..."
+apt-get install -y curl git zip unzip software-properties-common
 
-git clone https://github.com/teryxlabs/v4panel 
+# Install Node.js LTS (v20)
+echo_message "Installing Node.js (LTS)..."
+curl -sL https://deb.nodesource.com/setup_20.x | bash -
+apt-get install -y nodejs
+
+# Verify installs
+node -v
+npm -v
+
+echo_message "Cloning repository..."
+rm -rf v4panel
+git clone https://github.com/teryxlabs/v4panel
 cd v4panel
 
-# Node.js
-echo 'Installing Depenciencies'
-curl -sL https://deb.nodesource.com/setup_23.x | sudo bash -
-apt-get install nodejs git
+# Install and run panel
+echo_message "Installing npm packages..."
+npm install
 
-echo_message "* Dependencies Installed"
+echo_message "Seeding database..."
+npm run seed
 
-echo "* Installing Important things..."
+echo_message "Creating user..."
+npm run createUser
 
-apt install zip -y && unzip panel.zip
-npm install && npm run seed && npm run createUser
-
-echo "STARTING PANEL..."
-
-npm install && npm run seed && npm run createUser
-
-echo "PANEL STARTED"
+echo_message "Starting panel..."
 node .
+
+echo_message "Panel started successfully!"
