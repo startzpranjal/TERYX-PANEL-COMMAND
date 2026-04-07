@@ -67,7 +67,6 @@ npm install
 npm run seed
 npm run createUser
 
-npm install
 node .
 
 echo_message "* Panel Installed Successfully"
