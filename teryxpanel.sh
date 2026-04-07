@@ -86,4 +86,4 @@ npm run createUser
 
 echo_message "* Starting Panel..."
 
-node .
+npm run start
