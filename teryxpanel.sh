@@ -72,4 +72,4 @@ echo
 echo -e "${C5}[✔] PANEL INSTALLED & RUNNING!${NC}"
 echo -e "${C3}Login:${NC} admin@startz.com / admin"
 echo -e "${C3}Logs:${NC} pm2 logs teryx-panel"
-echo
+cd v4panel
