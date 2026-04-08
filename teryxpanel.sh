@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Gradient (light blue → light green)
-C1='\033[38;5;117m'  # light blue
+C1='\033[38;5;117m'
 C2='\033[38;5;123m'
 C3='\033[38;5;159m'
 C4='\033[38;5;151m'
-C5='\033[38;5;120m'  # light green
+C5='\033[38;5;120m'
 NC='\033[0m'
 
 clear
@@ -42,7 +42,7 @@ echo "[*] Installing Node.js..."
 curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 apt install -y nodejs
 
-# Install PM2 (keeps panel running)
+# Install PM2
 npm install -g pm2
 
 echo "[*] Cloning panel..."
@@ -56,17 +56,20 @@ unzip -o panel.zip
 echo "[*] Installing packages..."
 npm install
 
-echo "[*] Seeding data..."
+echo "[*] Seeding database..."
 npm run seed
 
 echo "[*] Creating admin user..."
-npm run createUser
+
+# AUTO USER INPUT
+printf "admin@startz.com\nadmin\nadmin\nadmin\n" | npm run createUser
 
 echo "[*] Starting panel with PM2..."
-pm2 start index.js --name teryx-panel
+pm2 start npm --name teryx-panel -- run start
 pm2 save
 
 echo
 echo -e "${C5}[✔] PANEL INSTALLED & RUNNING!${NC}"
-echo -e "${C3}Use: pm2 logs teryx-panel${NC}"
+echo -e "${C3}Login:${NC} admin@startz.com / admin"
+echo -e "${C3}Logs:${NC} pm2 logs teryx-panel"
 echo
