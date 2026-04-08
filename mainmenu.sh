@@ -55,7 +55,7 @@ while true; do
         1)
             echo ""
             echo -e "${Y}🔄 Running TERYX PANEL Installer...${N}"
-            curl -fsSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxpanel.sh | sed 's/\r$//' | bash
+            bash <(curl -s https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxpanel.sh)
             pause
             ;;
         2)
