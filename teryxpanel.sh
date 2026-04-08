@@ -24,52 +24,79 @@ echo
 
 # Root check
 if [ "$EUID" -ne 0 ]; then
-  echo "Run this script as root!"
+  echo "Run as root!"
   exit 1
 fi
 
-echo "[*] Fixing broken packages..."
+echo "[*] Fixing packages..."
 apt clean
 dpkg --configure -a
 apt install -f -y
 
 echo "[*] Installing dependencies..."
 apt update
-apt install -y curl software-properties-common git zip unzip
+apt install -y curl git zip unzip
 
-# Install Node.js
-echo "[*] Installing Node.js..."
+# Node.js
 curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 apt install -y nodejs
 
-# Install PM2
 npm install -g pm2
 
-echo "[*] Cloning panel..."
+# Install panel
 rm -rf v4panel
 git clone https://github.com/teryxlabs/v4panel
 cd v4panel || exit
 
-echo "[*] Extracting panel..."
 unzip -o panel.zip
-
-echo "[*] Installing packages..."
 npm install
 
-echo "[*] Seeding database..."
+# Seed database
 npm run seed
 
-echo "[*] Creating admin user..."
+# 🔥 FORCE CREATE USER (DIRECT DB METHOD)
+echo "[*] Creating admin user (forced)..."
 
-# AUTO USER INPUT
-printf "admin@startz.com\nadmin\nadmin\nadmin\n" | npm run createUser
+node <<EOF
+const bcrypt = require('bcryptjs');
+const fs = require('fs');
 
-echo "[*] Starting panel with PM2..."
+(async () => {
+  const password = await bcrypt.hash("admin", 10);
+
+  // adjust if DB path differs
+  const dbFile = './database.sqlite';
+
+  if (!fs.existsSync(dbFile)) {
+    console.log("Database not found!");
+    process.exit(1);
+  }
+
+  const sqlite3 = require('sqlite3').verbose();
+  const db = new sqlite3.Database(dbFile);
+
+  db.run(
+    \`INSERT INTO users (username, email, password, isAdmin)
+     VALUES ('admin','admin@startz.com','\${password}',1)\`,
+    (err) => {
+      if (err) {
+        console.log("User may already exist:", err.message);
+      } else {
+        console.log("Admin user created!");
+      }
+      db.close();
+    }
+  );
+})();
+EOF
+
+# Start panel
+echo "[*] Starting panel..."
 pm2 start npm --name teryx-panel -- run start
 pm2 save
 
 echo
-echo -e "${C5}[✔] PANEL INSTALLED and RUNNING!${NC}"
-echo -e "${C3}Login:${NC} admin@startz.com / admin"
-echo -e "${C3}Logs:${NC} pm2 logs teryx-panel"
-cd v4panel
+echo -e "${C5}[✔] PANEL RUNNING${NC}"
+echo -e "${C3}Login: admin@startz.com / admin${NC}"
+echo -e "${C3}Logs: pm2 logs teryx-panel${NC}"
+echo
