@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Colors
-C1='\033[38;5;196m'
-C2='\033[38;5;202m'
-C3='\033[38;5;208m'
-C4='\033[38;5;214m'
-C5='\033[38;5;220m'
+# Gradient (light blue → light green)
+C1='\033[38;5;117m'  # light blue
+C2='\033[38;5;123m'
+C3='\033[38;5;159m'
+C4='\033[38;5;151m'
+C5='\033[38;5;120m'  # light green
 NC='\033[0m'
 
 clear
@@ -24,34 +24,49 @@ echo
 
 # Root check
 if [ "$EUID" -ne 0 ]; then
-  echo "Run as root!"
+  echo "Run this script as root!"
   exit 1
 fi
 
-echo "[*] Installing dependencies..."
+echo "[*] Fixing broken packages..."
+apt clean
+dpkg --configure -a
+apt install -f -y
 
+echo "[*] Installing dependencies..."
 apt update
 apt install -y curl software-properties-common git zip unzip
 
-# Node.js
+# Install Node.js
+echo "[*] Installing Node.js..."
 curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 apt install -y nodejs
 
+# Install PM2 (keeps panel running)
+npm install -g pm2
+
 echo "[*] Cloning panel..."
+rm -rf v4panel
 git clone https://github.com/teryxlabs/v4panel
 cd v4panel || exit
 
-echo "[*] Extracting..."
-unzip panel.zip
+echo "[*] Extracting panel..."
+unzip -o panel.zip
 
-echo "[*] Installing npm packages..."
+echo "[*] Installing packages..."
 npm install
 
-echo "[*] Seeding..."
+echo "[*] Seeding data..."
 npm run seed
 
-echo "[*] Creating user..."
+echo "[*] Creating admin user..."
 npm run createUser
 
-echo "[*] Starting panel..."
-node .
+echo "[*] Starting panel with PM2..."
+pm2 start index.js --name teryx-panel
+pm2 save
+
+echo
+echo -e "${C5}[✔] PANEL INSTALLED & RUNNING!${NC}"
+echo -e "${C3}Use: pm2 logs teryx-panel${NC}"
+echo
