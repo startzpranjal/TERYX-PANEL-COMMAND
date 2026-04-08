@@ -34,15 +34,13 @@ apt clean
 dpkg --configure -a
 apt install -f -y
 
-# Install deps
+# Install dependencies
 echo -e "${GREEN}[*] Installing dependencies...${NC}"
 apt update
 apt install -y git zip unzip curl nodejs npm ufw
 
-# Install PM2
-npm install -g pm2
-
-echo -e "${GREEN}[*] Cloning daemon...${NC}"
+# Install daemon
+echo -e "${GREEN}[*] Installing daemon...${NC}"
 rm -rf /opt/teryx-daemon
 git clone https://github.com/dragonlabsdev/daemon /opt/teryx-daemon
 cd /opt/teryx-daemon || exit
@@ -52,34 +50,29 @@ cd daemon || exit
 
 npm install
 
-echo -e "${GREEN}[✔] Installation Complete${NC}"
+echo -e "${GREEN}[✔] Installation complete${NC}"
 
 # Config input
 echo -e "${YELLOW}"
-echo "Paste your node configuration below."
-echo "Press CTRL+D when finished."
+echo "Paste your config.json below"
+echo "Press CTRL+D when done"
 echo -e "${NC}"
 
 cat > config.json
 
-echo -e "${GREEN}[✔] Configuration saved${NC}"
+echo -e "${GREEN}[✔] Config saved${NC}"
 
-# Optional port open
-read -p "Enter daemon port (or press Enter to skip): " PORT
+# Optional firewall
+read -p "Enter daemon port to open (or press Enter to skip): " PORT
 if [ ! -z "$PORT" ]; then
   ufw allow $PORT
   echo -e "${GREEN}[✔] Port $PORT opened${NC}"
 fi
 
-# Start daemon
-echo -e "${GREEN}[*] Starting daemon with PM2...${NC}"
-pm2 start index.js --name teryx-daemon
-pm2 save
-
-# Enable startup
-pm2 startup | bash
-
 echo
-echo -e "${GREEN}[✔] DAEMON RUNNING${NC}"
-echo -e "${CYAN}Logs: pm2 logs teryx-daemon${NC}"
+echo -e "${CYAN}To start daemon manually:${NC}"
+echo -e "${GREEN}cd /opt/teryx-daemon/daemon${NC}"
+echo -e "${GREEN}node .${NC}"
+echo
+echo -e "${YELLOW}Tip: Use screen or tmux to keep it running${NC}"
 echo
