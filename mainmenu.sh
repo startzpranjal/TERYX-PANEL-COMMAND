@@ -61,7 +61,7 @@ while true; do
         2)
             echo ""
             echo -e "${Y}🛠️  Running TERYX NODE Installer...${N}"
-            curl -fsSL https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxdaemon.sh | sed 's/\r$//' | bash
+            bash <(curl -s https://raw.githubusercontent.com/startzpranjal/TERYX-PANEL-COMMAND/refs/heads/main/teryxdaemon.sh)
             pause
             ;;
         3)
