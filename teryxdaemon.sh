@@ -6,7 +6,6 @@ C2='\033[38;5;159m'
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 CYAN='\033[0;36m'
-YELLOW='\033[0;33m'
 NC='\033[0m'
 
 clear
@@ -55,19 +54,4 @@ cd daemon || exit
 npm install
 
 echo -e "${GREEN}[✔] Installation Complete${NC}"
-
-# Config
 echo
-echo -e "${YELLOW}Paste your config below → Press CTRL+D when done${NC}"
-echo
-
-cat > config.json
-
-echo -e "${GREEN}[✔] Configuration Saved${NC}"
-
-# Start
-echo
-echo -e "${CYAN}Starting Daemon...${NC}"
-echo
-
-node .
