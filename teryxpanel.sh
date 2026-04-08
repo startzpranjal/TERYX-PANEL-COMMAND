@@ -69,7 +69,7 @@ pm2 start npm --name teryx-panel -- run start
 pm2 save
 
 echo
-echo -e "${C5}[✔] PANEL INSTALLED & RUNNING!${NC}"
+echo -e "${C5}[✔] PANEL INSTALLED and RUNNING!${NC}"
 echo -e "${C3}Login:${NC} admin@startz.com / admin"
 echo -e "${C3}Logs:${NC} pm2 logs teryx-panel"
 cd v4panel
